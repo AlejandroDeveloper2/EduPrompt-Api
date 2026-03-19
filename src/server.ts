@@ -13,6 +13,7 @@ import { Feature } from "@/core/infrastructure/types";
 import { setSocketInstance } from "@/core/infrastructure/socket/SocketInstance";
 import { MongoDBConnectionAdapter } from "@/core/infrastructure/database";
 import { errorHandler } from "@/core/infrastructure/middlewares/errorHandler.middleware";
+import { healthRouter } from "./health.route";
 
 /** Configuración de nuestro servidor de express */
 class Server {
@@ -36,6 +37,9 @@ class Server {
 
     /** Inicializar middlewares globales */
     this.initializeMiddlewares();
+
+    /** Inicializar endpoint de check health */
+    this.server.use("/api/v1/health", healthRouter);
 
     /** Registrar rutas de cada feature */
     await this.loadFeatures();
