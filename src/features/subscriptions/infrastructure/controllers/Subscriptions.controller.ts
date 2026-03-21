@@ -169,8 +169,6 @@ class SubscriptionsController {
       const subscription =
         await subscriptionsServiceContainer.findSubscriptionByUser.run(userId);
 
-      console.log(subscription);
-
       handleHttp(
         res,
         {

@@ -2,6 +2,7 @@ import { Feature } from "@/core/infrastructure/types";
 
 import { router as subscriptionRouter } from "./infrastructure/routes/v1/subscriptions.route";
 import { startSubscriptionRenovationValidator } from "./infrastructure/jobs/subscriptions.job";
+import { registerSubscriptionSocket } from "./infrastructure/sockets/subscriptions.socket";
 
 import { SubscriptionMongoRepository } from "./infrastructure/repositories";
 
@@ -15,4 +16,5 @@ export const SubscriptionsFeature: Feature<SubscriptionMongoRepository, null> =
     repository: subscriptionRepository,
     service: null,
     jobs: [startSubscriptionRenovationValidator],
+    socket: registerSubscriptionSocket,
   };

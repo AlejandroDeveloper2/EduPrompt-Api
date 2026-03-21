@@ -50,14 +50,14 @@ export class RenewSubscriptionUseCase {
   private async renewSubscription(
     subscription: Subscription,
     today: Date,
-  ): Promise<void> {
+  ): Promise<string | null> {
     // 1️. Verificar si está expirada usando únicamente el último periodo activo
     const lastHistoryItem = subscription.history.at(-1);
-    if (!lastHistoryItem) return;
+    if (!lastHistoryItem) return null;
 
     const endDate = new Date(lastHistoryItem.endDate);
     // si la fecha de fin todavía no ha pasado no hacemos nada
-    if (!isAfter(today, endDate)) return;
+    if (!isAfter(today, endDate)) return null;
 
     // 3️. Cobrar en PayPal
     const productDetails: ProductDetails = {
@@ -106,6 +106,8 @@ export class RenewSubscriptionUseCase {
         history: updatedHistory,
       },
     ]);
+
+    return subscription.subscriptionId;
   }
 
   /**
@@ -118,7 +120,7 @@ export class RenewSubscriptionUseCase {
    * @remarks
    *   Cualquier fallo en una suscripción no afecta el procesamiento de otras.
    */
-  async run(): Promise<void> {
+  async run(): Promise<string[]> {
     const today = new Date();
 
     const activeSubscriptions =
@@ -131,12 +133,16 @@ export class RenewSubscriptionUseCase {
       return isAfter(today, new Date(last.endDate));
     });
 
+    //Variable para almacenar todos los ids de las subscripciones modificadas
+    const subscriptionIds: string[] = [];
+
     // Procesamos cada suscripción de forma aislada
     // allSettled garantiza que un fallo no detiene el resto
     const results = await Promise.allSettled(
-      toRenew.map((subscription) =>
-        this.renewSubscription(subscription, today),
-      ),
+      toRenew.map(async (subscription) => {
+        const id = await this.renewSubscription(subscription, today);
+        if (id) subscriptionIds.push(id);
+      }),
     );
 
     // Log de resultados para observabilidad del cron
@@ -182,5 +188,6 @@ export class RenewSubscriptionUseCase {
         }
       }),
     );
+    return subscriptionIds;
   }
 }
