@@ -20,8 +20,8 @@ import {
 } from "../../application/use-cases";
 
 import { AuthMongoRepository } from "../repositories";
-import { NodeMailerAdapter } from "../adapters";
 
+import { NodeMailerAdapter } from "@/core/infrastructure/email-notifications/adapters";
 import { MongoTransactionManagerAdapter } from "@/core/infrastructure/database";
 
 /**
@@ -73,36 +73,36 @@ export class AuthServiceContainer {
     codeGenerator,
     authRepository,
     emailSender,
-    transactionManager
+    transactionManager,
   );
   sendRecoveryPassRequest = new SendRecoveryPassRequestUseCase(
     codeGenerator,
     authRepository,
-    emailSender
+    emailSender,
   );
   validateEmailVerificationCode = new ValidateEmailVerificationCodeUseCase(
-    authRepository
+    authRepository,
   );
   validateResetPassCode = new ValidateResetPassCodeUseCase(authRepository);
   resendEmailVerificationCode = new ResendEmailVerificationCodeUseCase(
     codeGenerator,
     authRepository,
-    emailSender
+    emailSender,
   );
   resetUserPassword = new ResetUserPasswordUseCase();
   changeUserPassword = new ChangeUserPasswordUseCase();
   validateSession = new ValidateSessionUseCase(authRepository);
   refreshSession = new RefreshSessionUseCase(
     refreshTokenGenerator,
-    authRepository
+    authRepository,
   );
   logout = new LogoutUseCase(authRepository);
   sendEmailChangeRequest = new SendEmailChangeRequestUseCase(
     codeGenerator,
     authRepository,
-    emailSender
+    emailSender,
   );
   validateCodeAndUpdateEmail = new ValidateCodeAndUpdateEmailUseCase(
-    authRepository
+    authRepository,
   );
 }

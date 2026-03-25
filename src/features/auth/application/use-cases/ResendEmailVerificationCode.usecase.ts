@@ -1,5 +1,5 @@
 import { AuthRepositoryType } from "../../domain/repositories/AuthRepository.interface";
-import { IEmailSender } from "../../domain/ports/IEmailSender.interface";
+import { IEmailSender } from "../../../../core/domain/ports/IEmailSender.interface";
 import { VerificationCodeGeneratorService } from "../../domain/services";
 
 import { SendAccountActivationEmailService } from "../services";
@@ -54,6 +54,7 @@ export class ResendEmailVerificationCodeUseCase {
     await this.sendAccountActivationEmailService.run(
       userByEmail.userId,
       resendEmailVerificationCodeInput.email,
+      userByEmail.userName,
     );
   }
 }

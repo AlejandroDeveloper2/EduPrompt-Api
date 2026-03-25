@@ -1,6 +1,6 @@
 import { addMinutes } from "date-fns";
 
-import { IEmailSender } from "../../domain/ports/IEmailSender.interface";
+import { IEmailSender } from "../../../../core/domain/ports/IEmailSender.interface";
 import { AuthRepositoryType } from "../../domain/repositories/AuthRepository.interface";
 import { VerificationCodeGeneratorService } from "../../domain/services";
 
@@ -29,7 +29,7 @@ export class SendEmailChangeRequestUseCase {
     updatedEmail: string;
   }> {
     //Validamos si el userId pertenece a un usuario existente
-    await UsersFeature.service.findUserProfile.run(userId);
+    const { userName } = await UsersFeature.service.findUserProfile.run(userId);
 
     await UsersFeature.service.validateUserEmailAvailability.run(
       sendEmailChangeRequestInput.updatedEmail,
@@ -51,11 +51,12 @@ export class SendEmailChangeRequestUseCase {
       expiresAt,
     });
 
-    //Enviamos el email de cambio de contraseña
+    //Enviamos el email de cambio de correo
     await this.emailSender.sendEmail(
-      "Solicitud de cambio de correo electrónico de EduPrompt",
+      "Solicitud de cambio de correo",
       [sendEmailChangeRequestInput.updatedEmail],
-      `<h1>Código de verificación: ${resetEmailCode}</h1>`,
+      "email-change",
+      { userName, verificationCode: resetEmailCode },
     );
 
     return { updatedEmail: sendEmailChangeRequestInput.updatedEmail };

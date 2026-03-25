@@ -20,7 +20,7 @@ import {
 
 import { PaypalRepository } from "../payment";
 import { SubscriptionMongoRepository } from "../repositories/mongo/Subscription.mongoose.repository";
-import { NodeMailerAdapter } from "@/features/auth/infrastructure/adapters";
+import { NodeMailerAdapter } from "@/core/infrastructure/email-notifications/adapters";
 
 const subscriptionRepository = new SubscriptionMongoRepository();
 const paymentGatewayRepository = new PaypalRepository();

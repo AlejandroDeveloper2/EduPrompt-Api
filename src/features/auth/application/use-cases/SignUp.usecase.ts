@@ -3,7 +3,7 @@ import { hash } from "bcryptjs";
 import { ITransactionManager } from "@/core/domain/ports/ITransactionManager.interface";
 
 import { AuthRepositoryType } from "../../domain/repositories/AuthRepository.interface";
-import { IEmailSender } from "../../domain/ports/IEmailSender.interface";
+import { IEmailSender } from "../../../../core/domain/ports/IEmailSender.interface";
 import { VerificationCodeGeneratorService } from "../../domain/services";
 
 import { RegisterInput } from "../dto";
@@ -64,6 +64,7 @@ export class SignUpUseCase {
       await this.sendAccountActivationEmailService.run(
         userId,
         registerInput.email,
+        registerInput.userName,
       );
     });
   }

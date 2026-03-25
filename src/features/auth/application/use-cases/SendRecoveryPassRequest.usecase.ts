@@ -1,7 +1,7 @@
 import { addMinutes } from "date-fns";
 
 import { AuthRepositoryType } from "../../domain/repositories/AuthRepository.interface";
-import { IEmailSender } from "../../domain/ports/IEmailSender.interface";
+import { IEmailSender } from "../../../../core/domain/ports/IEmailSender.interface";
 import { VerificationCodeGeneratorService } from "../../domain/services";
 
 import { RecoveryPasswordRequestInput } from "../dto";
@@ -46,9 +46,13 @@ export class SendRecoveryPassRequestUseCase {
 
     //Enviamos el email de cambio de contraseña
     await this.emailSender.sendEmail(
-      "Solicitud de cambio de contraseña de EduPrompt",
+      "Solicitud de cambio de contraseña",
       [userByEmail.email],
-      `<h1>Código de verificación: ${resetCode}</h1>`,
+      "password-reset",
+      {
+        userName: userByEmail.userName,
+        verificationCode: resetCode,
+      },
     );
   }
 }

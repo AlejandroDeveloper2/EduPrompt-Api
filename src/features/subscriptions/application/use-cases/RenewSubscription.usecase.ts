@@ -2,7 +2,7 @@ import { addMonths, isAfter } from "date-fns";
 import { v4 as uuid } from "uuid";
 
 import { ITransactionManager } from "@/core/domain/ports/ITransactionManager.interface";
-import { IEmailSender } from "@/features/auth/domain/ports/IEmailSender.interface";
+import { IEmailSender } from "@/core/domain/ports/IEmailSender.interface";
 
 import { ProductDetails, SubscriptionHistory } from "../../domain/types";
 import { Subscription } from "../../domain/entities";
@@ -173,10 +173,12 @@ export class RenewSubscriptionUseCase {
               if (!user) return;
 
               await this.emailSender.sendEmail(
-                "Error al renovar la suscripción de EduPrompt",
+                "Error al auto renovar la suscripción",
                 [user.email],
-                `<h1>Ha ocurrido un error en el pago de tu suscripción, puedes reintentar el pago desde 
-                la app en la sección de configuraciones. Si el problema persiste comunicate con soporte</h1>`,
+                "payment-error",
+                {
+                  userName: user.userName,
+                },
               );
             });
           }

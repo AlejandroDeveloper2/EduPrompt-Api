@@ -1,6 +1,6 @@
 import { addMinutes } from "date-fns";
 
-import { IEmailSender } from "../../domain/ports/IEmailSender.interface";
+import { IEmailSender } from "../../../../core/domain/ports/IEmailSender.interface";
 import { AuthRepositoryType } from "../../domain/repositories/AuthRepository.interface";
 import { VerificationCodeGeneratorService } from "../../domain/services";
 
@@ -8,7 +8,7 @@ export class SendAccountActivationEmailService {
   constructor(
     private readonly codeGenerator: VerificationCodeGeneratorService,
     private readonly authRepository: AuthRepositoryType,
-    private readonly emailSender: IEmailSender
+    private readonly emailSender: IEmailSender,
   ) {}
 
   /**
@@ -16,9 +16,14 @@ export class SendAccountActivationEmailService {
    *
    * @param userId - Identificador único del usuario.
    * @param userEmail - Correo electrónico del usuario.
+   * @param userName - Nombre del usuario.
    * @throws {AppError} - Si ocurre un error al crear el código o enviar el correo.
    */
-  async run(userId: string, userEmail: string): Promise<void> {
+  async run(
+    userId: string,
+    userEmail: string,
+    userName: string,
+  ): Promise<void> {
     // Generamos el código de verificación
     const verificationCode = this.codeGenerator.generate();
 
@@ -36,9 +41,13 @@ export class SendAccountActivationEmailService {
 
     //Enviamos el email de activación de cuenta
     await this.emailSender.sendEmail(
-      "Activación de cuenta de EduPrompt",
+      "Activar cuenta Eduprompt",
       [userEmail],
-      `<h1>Código de verificación: ${verificationCode}</h1>`
+      "account-activation",
+      {
+        userName,
+        verificationCode,
+      },
     );
   }
 }
