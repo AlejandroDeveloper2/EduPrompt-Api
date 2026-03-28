@@ -11,7 +11,7 @@ import { GenerationInput } from "../dto/generateEducationalResource.dto";
 export class GenerateEducationalResourceUseCase {
   constructor(
     private readonly assistantInstructionsService: AssistantInstructionsService,
-    private readonly generationRepository: GenerationRepositoryType
+    private readonly generationRepository: GenerationRepositoryType,
   ) {}
 
   /**
@@ -28,7 +28,7 @@ export class GenerateEducationalResourceUseCase {
    */
   async run(
     resourceFormatkey: ResourceFormatKey,
-    generationInput: GenerationInput
+    generationInput: GenerationInput,
   ): Promise<Generation> {
     const { userPrompt } = generationInput;
 
@@ -39,7 +39,7 @@ export class GenerateEducationalResourceUseCase {
       const { result: visualPrompt } =
         await this.generationRepository.generateTextResource(
           imageInstructions,
-          userPrompt
+          userPrompt,
         );
 
       const assistantImageResponse =
@@ -50,7 +50,7 @@ export class GenerateEducationalResourceUseCase {
           ErrorMessages.IMAGE_GENERATION_NOT_COMPLETED,
           400,
           "It couldn't generate the image",
-          true
+          true,
         );
 
       const { generationDate, result } = assistantImageResponse;
@@ -66,7 +66,7 @@ export class GenerateEducationalResourceUseCase {
     const assistantResponse =
       await this.generationRepository.generateTextResource(
         genericInstructions,
-        userPrompt
+        userPrompt,
       );
     return assistantResponse;
   }

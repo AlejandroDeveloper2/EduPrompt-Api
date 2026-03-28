@@ -55,7 +55,7 @@ export class GenerationGroqRepository implements GenerationRepositoryType {
       const base64 = Buffer.from(arrayBuffer).toString("base64");
 
       return {
-        result: `data:image/png;base64,${base64}`,
+        result: base64,
         generationDate: new Date(),
       };
     } catch (error: unknown) {
