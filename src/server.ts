@@ -44,9 +44,6 @@ class Server {
     /** Registrar rutas de cada feature */
     await this.loadFeatures();
 
-    /** Ejecutar los jobs expuestos en cada feature si los hay  */
-    await this.registerFeatureJobs();
-
     /** Error handler global */
     this.initializeErrorHandler();
   }
@@ -67,6 +64,9 @@ class Server {
 
       // Cargar sockets de las features
       await this.registerFeatureSockets();
+
+      /** Ejecutar los jobs expuestos en cada feature si los hay  */
+      await this.registerFeatureJobs();
 
       this.httpServer.listen(config.PORT, () => {
         console.log(`✅ Server running on port ${config.PORT}`);
