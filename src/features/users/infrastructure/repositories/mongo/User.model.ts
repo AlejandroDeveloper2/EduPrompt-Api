@@ -23,7 +23,7 @@ const UserPreferencesSchema = new Schema<UserPreferences>(
     },
     cleanFrecuency: {
       type: String,
-      default: null,
+      default: "2-days",
     },
     pushNotifications: {
       type: Boolean,
