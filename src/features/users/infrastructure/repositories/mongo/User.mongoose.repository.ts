@@ -43,8 +43,8 @@ const mapUser = (mongoUser: MongoUser): User => {
     email,
     password,
     tokenCoins,
-    hasSubscription,
     isPremiumUser,
+    hasSubscription,
     accountStatus,
     userPreferences,
   );
