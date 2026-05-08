@@ -1,4 +1,4 @@
-import { Client, Environment, LogLevel } from "@paypal/paypal-server-sdk";
+import { Client, LogLevel } from "@paypal/paypal-server-sdk";
 
 import { config } from "./enviromentVariables";
 
@@ -9,7 +9,7 @@ export const paypalClient = new Client({
     oAuthClientSecret: config.PAYPAL_SECRET_KEY,
   },
   timeout: 0,
-  environment: Environment.Sandbox,
+  environment: config.PAYPAL_ENVIROMENT,
   logging: {
     logLevel: LogLevel.Info,
     logRequest: {

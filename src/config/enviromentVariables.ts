@@ -1,3 +1,4 @@
+import { Environment } from "@paypal/paypal-server-sdk";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,4 +23,6 @@ export const config = {
   PAYPAL_SECRET_KEY: process.env.PAYPAL_SECRET_KEY || "",
   PAYPAL_API_URL: process.env.PAYPAL_API_URL || "",
   PAYPAL_RETURN_URL: process.env.PAYPAL_RETURN_URL || "",
+  PAYPAL_ENVIROMENT:
+    (process.env.PAYPAL_ENVIROMENT as Environment) || Environment.Sandbox,
 };
